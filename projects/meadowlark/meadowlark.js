@@ -5,7 +5,10 @@ var app = express();
 //핸들바 뷰 엔진 설정
 var handlebars = require('express-handlebars')
 .create({ defaultLayout: 'main' });
-app
+app.use(function(req, res, next){
+    res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
+    next();
+})
     .engine('handlebars', handlebars.engine)
     .set('view engine', 'handlebars')
     .set('port', process.env.PORT  ||  3000)
